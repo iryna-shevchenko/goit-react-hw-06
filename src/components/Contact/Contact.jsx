@@ -1,10 +1,19 @@
-import { IoMdContact } from "react-icons/io";
-import { FaPhoneAlt } from "react-icons/fa";
-import { RiDeleteBin6Fill } from "react-icons/ri";
+import { useDispatch } from 'react-redux';
+import { deleteContact } from '../../redux/contactsSlice';
 
-import css from "./Contact.module.css";
+import { IoMdContact } from 'react-icons/io';
+import { FaPhoneAlt } from 'react-icons/fa';
+import { RiDeleteBin6Fill } from 'react-icons/ri';
 
-export default function Contact({ contact: { id, name, number }, onDelete }) {
+import css from './Contact.module.css';
+
+export default function Contact({ contact: { id, name, number } }) {
+  const dispatch = useDispatch();
+
+  const handleDeleteContact = () => {
+    dispatch(deleteContact(id));
+  };
+
   return (
     <div className={css.contactBox}>
       <div className={css.info}>
@@ -17,7 +26,7 @@ export default function Contact({ contact: { id, name, number }, onDelete }) {
           {number}
         </p>
       </div>
-      <button className={css.deleteBtn} onClick={() => onDelete(id)}>
+      <button className={css.deleteBtn} onClick={handleDeleteContact}>
         <RiDeleteBin6Fill className={css.iconBtn} />
       </button>
     </div>

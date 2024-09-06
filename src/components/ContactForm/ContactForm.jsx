@@ -1,39 +1,38 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useId } from "react";
-import * as Yup from "yup";
-import { nanoid } from "nanoid";
+import { useDispatch } from 'react-redux';
+import { addContact } from '../../redux/contactsSlice';
 
-import css from "./ContactForm.module.css";
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useId } from 'react';
+import * as Yup from 'yup';
 
-import { BiSolidContact } from "react-icons/bi";
+import { BiSolidContact } from 'react-icons/bi';
+
+import css from './ContactForm.module.css';
 
 const ContactFormSchema = Yup.object().shape({
   contactName: Yup.string()
-    .min(3, "Too few characters! Please provide more information!")
-    .max(50, "Too long! Please limit the input!")
-    .required("Field is required and cannot be empty"),
+    .min(3, 'Too few characters! Please provide more information!')
+    .max(50, 'Too long! Please limit the input!')
+    .required('Field is required and cannot be empty'),
   phoneNumber: Yup.string()
-    .matches(/^[\d-]+$/, "Phone number must contain only digits and dashes!")
-    .min(3, "Min value 3.")
-    .max(30, "Max value 30.")
-    .required("Field is required and cannot be empty"),
+    .min(3, 'Min value 3.')
+    .max(30, 'Max value 30.')
+    .required('Field is required and cannot be empty'),
 });
 
 const initialValues = {
-  contactName: "",
-  phoneNumber: "",
+  contactName: '',
+  phoneNumber: '',
 };
 
-export default function ContactForm({ onAddContact }) {
+export default function ContactForm() {
   const contactNameId = useId();
   const phoneNumberId = useId();
+  const dispatch = useDispatch();
 
   const handleSubmit = (values, actions) => {
-    onAddContact({
-      id: nanoid(),
-      name: values.contactName,
-      number: values.phoneNumber,
-    });
+    const { contactName, phoneNumber } = values;
+    dispatch(addContact({ name: contactName, number: phoneNumber }));
     actions.resetForm();
   };
 
@@ -63,7 +62,7 @@ export default function ContactForm({ onAddContact }) {
           <div className={css.fieldBox}>
             <label htmlFor="phoneNumberId">Phone number</label>
             <Field
-              type="tel"
+              type="number"
               name="phoneNumber"
               id={phoneNumberId}
               placeholder="Enter phone number"

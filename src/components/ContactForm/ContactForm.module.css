@@ -51,6 +51,12 @@
   transition: 0.4s cubic-bezier(0.05, 0.81, 0, 0.93);
 }
 
+.fieldBox input[type='number']::-webkit-inner-spin-button,
+.fieldBox input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .hero {
   display: flex;
   flex-direction: column;
